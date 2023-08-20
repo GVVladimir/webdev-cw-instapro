@@ -2,6 +2,8 @@ import { loginUser, registerUser } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
+
+
 export function renderAuthPageComponent({ appEl, setUser }) {
   let isLoginMode = true;
   let imageUrl = "";
@@ -75,6 +77,16 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       });
     }
 
+    const buttonLogin = () => {
+      document.addEventListener('keyup', (event) => {
+       if(event.key === 'Enter'){
+         document.getElementById("login-button").click()
+       };
+      });
+     };
+ 
+     buttonLogin();
+    
     document.getElementById("login-button").addEventListener("click", () => {
       setError("");
 
@@ -141,6 +153,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
           });
       }
     });
+
+    
 
     document.getElementById("toggle-button").addEventListener("click", () => {
       isLoginMode = !isLoginMode;
