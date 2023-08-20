@@ -9,7 +9,6 @@ export function getPosts({ token }) {
     method: "GET",
     headers: {
       Authorization: token,
-      
     },
   })
     .then((response) => {
