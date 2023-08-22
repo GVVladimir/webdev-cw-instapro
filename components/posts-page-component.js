@@ -1,6 +1,6 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, DeleteLike } from "../index.js";
 
 
 export function renderPostsPageComponent({ appEl }) {
@@ -17,10 +17,12 @@ export function renderPostsPageComponent({ appEl }) {
     </div>
     <div class="post-likes">
       <button data-post-id="${post.id}" class="like-button">
-        <img src="./assets/images/like-active.svg">
+        <img src=${
+          post.isLiked ? "./assets/images/like-active.svg" : "./assets/images/like-not-active.svg"
+        }>
       </button>
       <p class="post-likes-text">
-        Нравится: <strong>2</strong>
+        Нравится: <strong>${post.likes}</strong>
       </p>
     </div>
     <p class="post-text">
@@ -58,4 +60,13 @@ export function renderPostsPageComponent({ appEl }) {
       });
     });
   }
+  for (let likeEl of document.querySelectorAll(".like-button")) {
+    likeEl.addEventListener("click", () => {
+      DeleteLike({ postId: likeEl.dataset.postId });
+    });
+  }
+
+  
 }
+
+

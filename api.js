@@ -43,7 +43,7 @@ export function registerUser({ login, password, name, imageUrl }) {
 
 export function newGetPost ({ token, description, imageUrl }) {
   return fetch(postsHost, {
-    metod: "POST",
+    method: "POST",
     headers:{
       Authorization: token,
     }, 
@@ -62,6 +62,61 @@ export function newGetPost ({ token, description, imageUrl }) {
     };
   });
 };
+
+export function getPostUser ({ userId, token }){
+  return fetch (postsHost + `/user-posts/${userId}`,{
+    method: "GET",
+   headers:{
+    Authorization: token,
+   }, 
+   })
+  .then((response) => {
+    return response.json()
+  })
+  .then((data) => {
+    return data.posts;
+  });
+ 
+}
+// добавить пост в апи
+export function postLike({ postId, token }) {
+  return fetch(postsHost + `/${postId}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    
+    })
+  .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      if (error.message === "Нет авторизации") {
+        alert("Авторизуйтесь!");
+      }
+    })
+};
+// удалить лайк в апи
+    export function postDellike({ postId, token }) {
+      return fetch(postsHost + `/${postId}/dislike`, {
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+        
+      })
+      .then((response) => {
+          if (response.status !== 200) {
+            throw new Error("Нет авторизации");
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          if (error.message === "Нет авторизации") {
+            alert("Авторизуйтесь!");
+          }
+        });
+    };
 
 export function loginUser({ login, password }) {
   return fetch(baseHost + "/api/user/login", {
