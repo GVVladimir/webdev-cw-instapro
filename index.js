@@ -8,7 +8,7 @@ import {
   POSTS_PAGE,
   USER_POSTS_PAGE,
 } from "./routes.js";
-import { renderPostsPageComponent } from "./components/posts-page-component.js";
+import {  renderPostsPageComponent } from "./components/posts-page-component.js";
 import { renderLoadingPageComponent } from "./components/loading-page-component.js";
 import {
   getUserFromLocalStorage,
@@ -35,20 +35,20 @@ export const logout = () => {
 export function DeleteLike({ postId }) {
   const index = posts.findIndex((post) => post.id === postId);
   if (posts[index].isLiked) {
-    postDellike({
-       postId: postId, 
-       token: getToken() 
+    postDellike({postId: postId, token: getToken() 
       }).then(() => {
+        posts[index].likes.length --;
       posts[index].isLiked = false;
+      
       renderApp();
+     
     });
   } else {
-    postLike({ 
-      postId: postId, 
-      token: getToken() 
+    postLike({ postId: postId, token: getToken() 
     }).then(() => {
-      posts[index].isLiked = true;
-      renderApp();
+      posts[index].likes.length ++;
+     posts[index].isLiked = true;
+    renderApp();
     });
   }
 }

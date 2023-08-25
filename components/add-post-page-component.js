@@ -47,7 +47,18 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       imageUrl = newImageUrl;
      },
    });
-  }  
-}
+  } 
+  
+  document.getElementById('add-button').addEventListener('click', () =>
+posts.push({
+  description: inputElement.value
+  .replace('<', '&lt')
+  .replace('>', '&gt'),
+  imageUrl: imageUrl
+  .replace('<', '&lt')
+  .replace('>', '&gt'),
+}));
 
+
+}
 

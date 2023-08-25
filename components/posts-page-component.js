@@ -3,9 +3,12 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, DeleteLike } from "../index.js";
 
 
+
 export function renderPostsPageComponent({ appEl }) {
+ 
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
+  
   const postsHTML = posts.map((post) => {
     return `<li class="post">
     <div class="post-header" data-user-id="${post.user.id}">
@@ -17,12 +20,10 @@ export function renderPostsPageComponent({ appEl }) {
     </div>
     <div class="post-likes">
       <button data-post-id="${post.id}" class="like-button">
-        <img src=${
-          post.isLiked ? "./assets/images/like-active.svg" : "./assets/images/like-not-active.svg"
-        }>
+        <img src=${post.isLiked ? "./assets/images/like-active.svg" : "./assets/images/like-not-active.svg"}>
       </button>
       <p class="post-likes-text">
-        Нравится: <strong>${post.likes}</strong>
+        Нравится: <strong ">${post.likes.length}</strong>
       </p>
     </div>
     <p class="post-text">
@@ -64,9 +65,10 @@ export function renderPostsPageComponent({ appEl }) {
     likeEl.addEventListener("click", () => {
       DeleteLike({ postId: likeEl.dataset.postId });
     });
+    
+  }
+
   }
 
   
-}
-
-
+  

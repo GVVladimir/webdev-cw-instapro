@@ -78,16 +78,16 @@ export function getPostUser ({ userId, token }){
   });
  
 }
-// добавить пост в апи
+// добавить лайк в апи
 export function postLike({ postId, token }) {
   return fetch(postsHost + `/${postId}/like`, {
     method: "POST",
     headers: {
       Authorization: token,
     },
-    
+   
     })
-  .then((response) => {
+    .then((response) => {
       return response.json();
     })
     .catch((error) => {
