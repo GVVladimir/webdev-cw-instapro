@@ -1,0 +1,23 @@
+{
+  "name": "yes",
+  "version": "1.0.0",
+  "description": "MVP аналога популярной соц. сети для обмена фотографиями",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GVVladimir/webdev-cw-instapro.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GVVladimir/webdev-cw-instapro/issues"
+  },
+  "homepage": "https://github.com/GVVladimir/webdev-cw-instapro#readme",
+  "dependencies": {
+    "date-fns": "^2.30.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

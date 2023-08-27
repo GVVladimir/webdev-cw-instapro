@@ -1,15 +1,17 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, DeleteLike } from "../index.js";
-
+import { format } from "date-fns"
 
 
 export function renderPostsPageComponent({ appEl }) {
- 
+  const now = new Date();
+  
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
   
   const postsHTML = posts.map((post) => {
+    const created_at = format(now, 'hh.mm.ss');
     return `<li class="post">
     <div class="post-header" data-user-id="${post.user.id}">
         <img src="${post.user.imageUrl}" class="post-header__user-image">
@@ -31,7 +33,7 @@ export function renderPostsPageComponent({ appEl }) {
       ${post.description}
     </p>
     <p class="post-date">
-      19 минут назад
+     ${created_at}
     </p>
   </li>`
   }).join('');
