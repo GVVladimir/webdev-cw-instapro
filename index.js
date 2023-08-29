@@ -34,6 +34,10 @@ export const logout = () => {
 
 export function DeleteLike({ postId }) {
   const index = posts.findIndex((post) => post.id === postId);
+  if(!getToken()){
+    alert('Необходимо авторизоваться')
+    return;
+  }
   if (posts[index].isLiked) {
     postDellike({postId: postId, token: getToken() 
       }).then(() => {
