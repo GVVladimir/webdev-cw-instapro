@@ -9,7 +9,6 @@ export function getPosts({ token }) {
     method: "GET",
     headers: {
       Authorization: token,
-      
     },
   })
     .then((response) => {
@@ -29,10 +28,27 @@ export function registerUser({ login, password, name, imageUrl }) {
   return fetch(baseHost + "/api/user", {
     method: "POST",
     body: JSON.stringify({
-      login,
-      password,
-      name,
-      imageUrl,
+      login:login 
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
+     
+      password: password
+      .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
+      name: name 
+      .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
+      imageUrl: imageUrl
+      .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
     }),
   }).then((response) => {
     if (response.status === 400) {
@@ -44,7 +60,7 @@ export function registerUser({ login, password, name, imageUrl }) {
 
 export function newGetPost ({ token, description, imageUrl }) {
   return fetch(postsHost, {
-    metod: "POST",
+    method: "POST",
     headers:{
       Authorization: token,
     }, 
@@ -63,6 +79,61 @@ export function newGetPost ({ token, description, imageUrl }) {
     };
   });
 };
+
+export function getPostUser ({ userId, token }){
+  return fetch (postsHost + `/user-posts/${userId}`,{
+    method: "GET",
+   headers:{
+    Authorization: token,
+   }, 
+   })
+  .then((response) => {
+    return response.json()
+  })
+  .then((data) => {
+    return data.posts;
+  });
+ 
+}
+// добавить лайк в апи
+export function postLike({ postId, token }) {
+  return fetch(postsHost + `/${postId}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+   
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      if (error.message === "Нет авторизации") {
+        alert("Авторизуйтесь!");
+      }
+    })
+};
+// удалить лайк в апи
+    export function postDellike({ postId, token }) {
+      return fetch(postsHost + `/${postId}/dislike`, {
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+        
+      })
+      .then((response) => {
+          if (response.status !== 200) {
+            throw new Error("Нет авторизации");
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          if (error.message === "Нет авторизации") {
+            alert("Авторизуйтесь!");
+          }
+        });
+    };
 
 export function loginUser({ login, password }) {
   return fetch(baseHost + "/api/user/login", {

@@ -1,4 +1,4 @@
-import { getPosts, newGetPost } from "./api.js";
+import { getPostUser, getPosts, newGetPost, postDellike, postLike } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -8,13 +8,14 @@ import {
   POSTS_PAGE,
   USER_POSTS_PAGE,
 } from "./routes.js";
-import { renderPostsPageComponent } from "./components/posts-page-component.js";
+import {  renderPostsPageComponent } from "./components/posts-page-component.js";
 import { renderLoadingPageComponent } from "./components/loading-page-component.js";
 import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+// import { renderUserPostPage } from "./components/user-page.js";
 
 export let user = getUserFromLocalStorage();
 export let page = null;
@@ -30,6 +31,31 @@ export const logout = () => {
   removeUserFromLocalStorage();
   goToPage(POSTS_PAGE);
 };
+
+export function DeleteLike({ postId }) {
+  const index = posts.findIndex((post) => post.id === postId);
+  if(!getToken()){
+    alert('Необходимо авторизоваться')
+    return;
+  }
+  if (posts[index].isLiked) {
+    postDellike({postId: postId, token: getToken() 
+      }).then(() => {
+        posts[index].likes.length --;
+      posts[index].isLiked = false;
+      
+      renderApp();
+     
+    });
+  } else {
+    postLike({ postId: postId, token: getToken() 
+    }).then(() => {
+      posts[index].likes.length ++;
+     posts[index].isLiked = true;
+    renderApp();
+    });
+  }
+}
 
 /**
  * Включает страницу приложения
@@ -68,10 +94,20 @@ export const goToPage = (newPage, data) => {
 
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
+
       console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
+      page = LOADING_PAGE;
+      renderApp();
+      return getPostUser({ userId: data.userId, token: getToken() })
+        .then((postUser) => {
+          page = USER_POSTS_PAGE;
+          posts = postUser;
+          renderApp();
+          
+        })
+        .catch((error) => {
+         
+        });
     }
 
     page = newPage;
@@ -126,8 +162,9 @@ const renderApp = () => {
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+
+    return renderPostsPageComponent({ appEl });
   }
 };
 
